@@ -1,0 +1,54 @@
+#! /usr/bin/env zsh
+
+function setup_osx_flags {
+  defaults write -g com.apple.swipescrolldirection -bool true
+  defaults write com.apple.Safari ShowStatusBar -bool true
+}
+
+function trigger_and_wait_for_git {
+  #until git
+  #do
+  #  echo "Waiting for git to install..."
+  #  sleep 2
+  #done
+  
+  #git
+  #while [ $? -ne 0 ]; do # check the status of the last command isn't 0 (success)
+  #  passwd
+  #done
+}
+
+function zsh_defaults {
+  #@todo - these don't work properly
+  sed 's/robbyrussell/pygmalion/gp' .zshrc > zshrc
+  sed 's/\(git\)/(osx git sublime capistrano aws docker )/gp' zshrc > .zshrc
+  rm zshrc
+}
+
+function setup_php {
+  curl -s http://php-osx.liip.ch/install.sh | bash -s 7.0
+  sudo apachectl stop
+  # @todo - add "export PATH=/usr/local/php5/bin:$PATH" to ~/.zshrc
+  
+  # install composer
+  curl -sS https://getcomposer.org/installer | php
+  chmod +x composer.phar
+  mv composer.phar /usr/local/bin/composer
+}
+
+function setup_homebrew {
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+}
+
+function homebrew_downloads {
+  brew install rbenv
+  brew tap caskroom/cask
+  brew tap caskroom/versions
+  brew cask install --appdir=/Applications alfred tower sequel-pro textmate sublime-text3 google-chrome firefox spotify lastpass launchbar karabiner sketch virtualbox vagrant atom slack mplayerx xscreensaver steam dockertoolbox dropbox
+}
+
+function setup_aws_tools {
+  curl -O http://s3.amazonaws.com/ec2-downloads/ec2-api-tools.zip
+  sudo mkdir -p /usr/local/ec2
+  sudo unzip ec2-api-tools.zip -d /usr/local/ec2
+}
